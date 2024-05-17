@@ -4,10 +4,7 @@ import java.io.IOException;
 import foodApp.foodDeliveryApp.ConstValues;
 import foodApp.foodDeliveryApp.Foods;
 public class Invoice extends Foods implements ConstValues {
-public Invoice() throws IOException {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+
 	//      double gstAmount;
 //	public void findGst(double amount) {
 //	 	gstAmount=(amount/100)*18;
@@ -16,15 +13,15 @@ public Invoice() throws IOException {
 	double amount=amount1*quantity;
 		if(amount>0 && quantity>0) {
 		double discountPercent=0;
-		if(amount>=1000 && amount<5000)
+		if(amount>=200 && amount<500)
 		{
 			discountPercent=5;
 		}
-		else if(amount>=5000 && amount<10000)
+		else if(amount>=500 && amount<700)
 		{
 		discountPercent=7;	
 		}
-		else if(amount>=10000)
+		else if(amount>=700)
 		{
 			discountPercent=10;
 		}

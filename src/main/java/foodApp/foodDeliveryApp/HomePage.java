@@ -2,66 +2,72 @@ package foodApp.foodDeliveryApp;
 import java.io.IOException;
 import java.util.Scanner;
 import billing.Invoice;
+import files.XlFiles;
 public class HomePage extends Invoice {
 
-public HomePage() throws IOException {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-
-		//	public void findHotel() throws Exception {
-//		
-//		 Scanner sc=new Scanner(System.in);
-//	        HomePage hp=new HomePage();
-//	        System.out.println("Enter hotelName");
-//	        String hotelName=sc.nextLine();
-//	        String searchedHotelName=hp.hotelXlsx(hotelName); 
-//	        if(searchedHotelName !=null) {
-//	        System.out.println("Search Food");
-//	        String foodName=sc.nextLine(); 
-//	        int foodRow= hp.searchFood(foodName,searchedHotelName);
-//	        if(foodRow>0 || foodRow !=0) {
-//	        double amount=hp.getPrice(foodRow,searchedHotelName);
-//	        System.out.println("Enter Quantity");
-//	        int quantity=sc.nextInt();
-//	        double checkQuantity=hp.getQuantity(foodRow, searchedHotelName, quantity);
-//	        if(checkQuantity !=0){
-//	          calculateToalPrice(amount,checkQuantity);
-//	        }
-//	        }
-//	        }
-//	          sc.close();
-//	}
-		public void findHotel() throws Exception {
-		
-		 Scanner sc=new Scanner(System.in);
+        public static  void findHotel() throws Exception {  
+		 @SuppressWarnings("resource")
+		Scanner sc=new Scanner(System.in);
 	        HomePage hp=new HomePage();
 	        System.out.println("Enter hotelName");
 	        String hotelName=sc.nextLine();
 	        String searchedHotelName=hp.hotelXlsx(hotelName); 
 	        if(searchedHotelName !=null) {
-	        System.out.println("Search Food");
+	        System.out.println("Hotel is Available");
+	        System.out.println("Search Food in the Menu List");
 	        String foodName=sc.nextLine(); 
-	        String searchFood=hp.searchFoods(foodName,searchedHotelName);
-	         if(searchFood !=null) {
+	        boolean searchFood=hp.searchFoods(foodName,searchedHotelName);
+	        if(searchFood) {
+	        System.out.println("Food is Available");
 	        	 System.out.println("Enter Quantity"); 
 	         double quantity=sc.nextDouble();
-	         double checkQuantity=hp.foodQuantity(foodName, searchFood, quantity);
-	         double amount=hp.foodPrice(foodName, searchFood);
-	        	      if(checkQuantity !=0) {
-	        	    	  calculateTotalPrice(amount,quantity);
+	         double Quantity=hp.getQuantity(searchFood,foodName,quantity,searchedHotelName);
+	         if(Quantity >quantity) {
+	        	  System.out.println("Quantity is available");
+	         double amount=hp.getPrice(searchFood,foodName,searchedHotelName);
+	        	    	  calculateTotalPrice(amount,quantity);	  
+	        	    	  System.out.println("**********ORDER PLACED SUCESSFULLY***************");
 	        	      }
-	        			 }
+	         else
+	        	 System.out.println("Quantity is not available Available Quantity is  "+Quantity); 
 	        }
+	        else
+        		System.out.println("Food is not Available Search Available Food in the Menu List");
+	        
 		}
-		 
-		
-	 
-	public static void main(String[] args) throws Exception {
-		// TODO Auto-generated method stub
-	    HomePage hp=new HomePage();
-	    hp.findHotel();
-	}
+	        else
+	        	 System.out.println("Hotel is Not Available");
+        }
+	        
+ 
 
+	 
+	public static void main(String[] args) throws Exception{
+
+	     Thread t=new Thread () {
+	    	  XlFiles xl=new XlFiles();
+	    	 public void run() {
+	    		  try {
+					xl.XlFiless();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	    	 }	
+	     };
+	     t.start(); 
+	     t.join();
+	     Thread t1=new Thread () {
+	    	 public void run() {
+	    		  try {
+				findHotel();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	    	 }	
+	     };  
+	     t1.start();
+
+	}
 }

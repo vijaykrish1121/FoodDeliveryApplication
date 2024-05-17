@@ -1,42 +1,47 @@
 package foodApp.foodDeliveryApp;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
+import java.util.Map;
 import files.XlFiles;
 public class Hotels extends XlFiles implements ConstValues{
-	   public Hotels() throws IOException {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+
 	public String hotelXlsx(String name) throws Exception{
-		 //  List<Object> item=xlRead(FilePath,"hotelNames");
-		      boolean contains=hotelNames.contains(name);
-			   if(contains){
-                 System.out.println("Hotel is Available");
+		
+		      boolean contains1=hotelNames.containsKey(name);
+			   if(contains1){
+//                 System.out.println("Hotel is Available");
+                  System.out.println("/************************** Menus  *******************/");
+                  Map <String,List<String>> item= getSheet(name);
+              	List<String>  list1=new ArrayList<String>();
+              	List<String>  list2=new ArrayList<String>();
+                   int max=0;
+                  
+                    for(String item1 :item.keySet()) {
+                    	List<String>list=item.get(item1);
+                         list1.add(item1);
+                    	String price=list.get(1);
+                    	list2.add(list.get(1));
+                    	if(item1.length()>max) {
+                    		max=item1.length();
+                    	}
+                 int value=max+2;
+               
+                    	 String formattedString = String.format("%-"+value+"s"+"%-"+value+"s", item1, price);
+                         System.out.println(formattedString);
+
+                    }
+                     
+                    System.out.println("/******************Thank u ***********************/");
                  return name;
 		       }
 			   else
-		   System.out.println("Hotel is not Available");
 		   return null;  
 	   }
-	   public void foodSheet() throws IOException {
-		    List<Object> item=xlRead(FilePath,"a2b");
-		    System.out.println(item);
-	   }
-	   
+  
 	public static void main(String[] args) throws Exception {
 		Hotels t=new Hotels();
 	System.out.println(	t.hotelXlsx("a2b"));
-	t.foodSheet();
+
 	}
 
 }
